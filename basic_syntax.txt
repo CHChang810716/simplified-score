@@ -1,0 +1,9 @@
+scoreScore := simpleRows & crossRowNotations
+simpleRows := simpleRow | simpleRows
+simpleRow := measureList & 圓滑(連接)線 & 文字標記 & 符號標記...
+measureList := measure + measureList
+measure := notesGroupList
+notesGroupList := notesGroup + notesGroupList
+notesGroup := noteList & under_line
+noteList := note + noteList
+note := (flat|sharp) & key_code & octave & tempo_dash & tempo_point
