@@ -4,12 +4,6 @@ import {value_or, rects_union} from './utils.js';
 class NoteGroup extends Component {
   constructor(props){
     super(props);
-    this.state = {
-      model:         props.model, // {key_code, octave, ascent}
-      pos_x:         props.pos_x,
-      pos_y:         props.pos_y,
-      size_ratio:    props.size_ratio
-    };
     this.notes = [];
     this.line = [
       { start: -1, end: -1},
@@ -18,34 +12,34 @@ class NoteGroup extends Component {
       { start: -1, end: -1}
     ];
     // this.bound_rect = {x:-1, y:-1, width:0, height:0}
-    this.state.model.notes.map((n) => {
+    this.props.model.notes.map((n) => {
       n.under_line = 0;
     });
-    for(let i in this.state.model.under_line) {
-      let under_line = this.state.model.under_line[i];
+    for(let i in this.props.model.under_line) {
+      let under_line = this.props.model.under_line[i];
       let curr_line = this.line[i];
       curr_line.start = under_line[0];
       curr_line.end   = under_line[under_line.length - 1] + 1;
       for(let j = curr_line.start; j < curr_line.end; j ++ ) {
-        this.state.model.notes[j].under_line ++;
+        this.props.model.notes[j].under_line ++;
       }
     }
-    let last_x_r = this.state.pos_x;
-    for(let i in this.state.model.notes) {
-      let noteinfo=this.state.model.notes[i];
+    let last_x_r = this.props.pos_x;
+    for(let i in this.props.model.notes) {
+      let noteinfo=this.props.model.notes[i];
       let margin_seed = this.getMarginSeed(
         noteinfo.under_line
       );
-      let margin = margin_seed * this.state.size_ratio;
+      let margin = margin_seed * this.props.size_ratio;
       let note = new Note(
         {
           key_code: noteinfo.key_code,
           octave: noteinfo.octave,
           ascent: noteinfo.ascent,
           key_x: last_x_r + margin,
-          key_y: this.state.pos_y,
+          key_y: this.props.pos_y,
           half_point: noteinfo.half_point,
-          size_ratio: this.state.size_ratio
+          size_ratio: this.props.size_ratio
         }
       );
       let last_rect = note.boundRect()
@@ -53,7 +47,7 @@ class NoteGroup extends Component {
       this.notes.push(note);
     }
     const line_margin_seed = 1;
-    this.line_margin = line_margin_seed * this.state.size_ratio;
+    this.line_margin = line_margin_seed * this.props.size_ratio;
     let n_rect = this.notesBoundRect();
     this.line_margin_y0 = n_rect.y + n_rect.height + this.line_margin;
   }
@@ -145,8 +139,8 @@ class NoteGroup extends Component {
         // }}></rect>),
         (<circle r={2} transform={
           "translate(" + 
-            this.state.pos_x + "," +
-            this.state.pos_y + 
+            this.props.pos_x + "," +
+            this.props.pos_y + 
           ")"
         }></circle>)
     ]

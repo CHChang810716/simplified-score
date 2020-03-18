@@ -5,8 +5,6 @@ class SimpleRow extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      pos_x: props.pos_x,
-      pos_y: props.pos_y,
       front_bar_gen: value_or(
         props.front_bar_gen, function(x, y, len) {
           return (<line x1={x} x2={x} y1={y} y2={y + len} 
@@ -16,25 +14,23 @@ class SimpleRow extends Component {
             }}
           />)
         }
-      ),
-      size_ratio: props.size_ratio,
-      model: props.model
+      )
     }
     const front_bar_len_seed = 14.6;
     const padding_x_seed = 0.5;
     const padding_y_seed = 4;
-    this.front_bar_len  = front_bar_len_seed  * this.state.size_ratio;
-    this.padding_x      = padding_x_seed      * this.state.size_ratio;
-    this.padding_y      = padding_y_seed      * this.state.size_ratio;
+    this.front_bar_len  = front_bar_len_seed  * this.props.size_ratio;
+    this.padding_x      = padding_x_seed      * this.props.size_ratio;
+    this.padding_y      = padding_y_seed      * this.props.size_ratio;
     this.measures       = [];
     let last_x_offset   = 0;
-    for(let m_mdl of this.state.model) {
+    for(let m_mdl of this.props.model) {
       let m = new Measures(
         {
           model: m_mdl,
-          pos_x: last_x_offset + this.state.pos_x,
-          pos_y: this.state.pos_y,
-          size_ratio: this.state.size_ratio
+          pos_x: last_x_offset + this.props.pos_x,
+          pos_y: this.props.pos_y,
+          size_ratio: this.props.size_ratio
         }
       );
       this.measures.push(m);
@@ -44,8 +40,8 @@ class SimpleRow extends Component {
   }
   frontBarBoundRect() {
     return {
-      x: this.state.pos_x,
-      y: this.state.pos_y - this.padding_y,
+      x: this.props.pos_x,
+      y: this.props.pos_y - this.padding_y,
       width: 0,
       height: this.front_bar_len
     }
